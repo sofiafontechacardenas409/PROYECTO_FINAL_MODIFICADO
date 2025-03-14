@@ -1,0 +1,37 @@
+CREATE DATABASE ProyectoFinalDB;
+GO
+
+USE ProyectoFinalDB;
+GO
+
+
+CREATE TABLE Usuarios (
+    IdUsuario INT PRIMARY KEY IDENTITY(1,1),
+    Nombre NVARCHAR(100) NOT NULL,
+    Correo NVARCHAR(100) NOT NULL UNIQUE,
+    Contraseña NVARCHAR(100) NOT NULL,
+    Rol NVARCHAR(50) NOT NULL -- Ejemplo: Admin, Usuario, etc.
+);
+GO
+
+
+CREATE TABLE Espacios (
+    IdEspacio INT PRIMARY KEY IDENTITY(1,1),
+    NombreEspacio NVARCHAR(100) NOT NULL,
+    Descripcion NVARCHAR(255) NULL,
+    Capacidad INT NOT NULL
+);
+GO
+
+
+CREATE TABLE Reservas (
+    IdReserva INT PRIMARY KEY IDENTITY(1,1),
+    UsuarioId INT NOT NULL,
+    EspacioId INT NOT NULL,
+    FechaReserva DATE NOT NULL,
+    HoraInicio TIME NOT NULL,
+    HoraFin TIME NOT NULL,
+    FOREIGN KEY (UsuarioId) REFERENCES Usuarios(IdUsuario),
+    FOREIGN KEY (EspacioId) REFERENCES Espacios(IdEspacio)
+);
+GO
