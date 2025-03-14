@@ -1,0 +1,36 @@
+namespace PROYECTO_FINAL
+{
+    internal class CRUDReservasDatos
+    {
+        private Conexion conexion = new Conexion();
+
+        public DataTable MostrarReservas()
+        {
+            DataTable tabla = new DataTable();
+            SqlConnection cn = conexion.AbrirConexion();
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM Reservas", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            tabla.Load(reader);
+
+            conexion.CerrarConexion();
+            return tabla;
+        }
+
+        public bool InsertarReserva(int usuarioId, int espacioId, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin)
+        {
+            SqlConnection cn = conexion.AbrirConexion();
+            SqlCommand cmd = new SqlCommand("INSERT INTO Reservas (UsuarioId, EspacioId, FechaReserva, HoraInicio, HoraFin) VALUES (@usuarioId, @espacioId, @fecha, @horaInicio, @horaFin)", cn);
+
+            cmd.Parameters.AddWithValue("@usuarioId", usuarioId);
+            cmd.Parameters.AddWithValue("@espacioId", espacioId);
+            cmd.Parameters.AddWithValue("@fecha", fecha);
+            cmd.Parameters.AddWithValue("@horaInicio", horaInicio);
+            cmd.Parameters.AddWithValue("@horaFin", horaFin);
+
+            int result = cmd.ExecuteNonQuery();
+            conexion.CerrarConexion();
+            return result > 0;
+        }
+    }
+}
